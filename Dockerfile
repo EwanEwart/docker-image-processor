@@ -29,6 +29,30 @@ RUN go build -o ./bin/avatar .
 # as with the specified directory -- /app/shared --.
 VOLUME [ "/app/shared" ]
 
+# Apart from specifying a volume with the VOLUME instruction in the Dockerfile, 
+# a volume can also be created and mounted on the fly 
+# using the -v (short for --volume) or the --mount flag 
+# with the -- $ docker run -- command. 
+# The --mount flag is more powerful and verbose than -v.
+# For simplicity the -v flag is used:
+# 
+# $ docker run -v <vol>:<dest>:<options> <image>
+# 
+# Here the <vol> value specifies the volume name to be used. 
+# If this volume does not exist, Docker will create it 
+# with the given name. 
+# If this value is omitted, including :, 
+# Docker will create an anonymous volume, 
+# which will be shared with <dest>. 
+# 
+# A host volume can also be mounted 
+# by specifying a directory path on the host’s filesystem.
+# The <dest> value specifies an absolute path 
+# to the directory of the container's filesystem 
+# where the volume would be mounted. 
+# If this <dest> directory does not exist, 
+# it will be created in the container.
+
 # set entrypoint
 # The ENTRYPOINT instruction 
 # sets the default command for the container
