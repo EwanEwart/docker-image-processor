@@ -52,7 +52,7 @@ build () {
     docker build -t avatar .
     docker images
 }
-build_keir () { // build on keir intranet
+build_on_keir () { // build on keir intranet
     # compile on another server
     export DOCKER_HOST=ssh://keir@192.168.188.222
     echo "→ DOCKER_HOST=$DOCKER_HOST"
@@ -73,8 +73,6 @@ view() {
 }
 
 
-
-
 # macOS is not a native host of the Docker engine, 
 # which is why the Docker engine 
 # runs through a Linux virtual machine. 
@@ -84,6 +82,7 @@ view() {
 # Remedy macOS:
 # alias dvmc='docker run -it --rm --privileged --pid=host alpine:edge nsenter -t 1 -m -u -n -i sh'
 # $ dvmc
+# This (D)ocker VM Console has the details as usual under /var/lib/docker
 # 
 
 case "$1" in
@@ -100,7 +99,7 @@ case "$1" in
     view
     ;;
 "keir")
-    build_keir
+    build_on_keir
     ;;
 "test")
     test
@@ -112,6 +111,6 @@ case "$1" in
     dmv
     ;;
 *)
-    echo -e "\n> Usage: $0 keir | prune | build | run | dmv\n"
+    echo -e "\n> Usage: $0 prune | build | run | view | test | rawrun | dmv\n"
     ;;
 esac
