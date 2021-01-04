@@ -58,7 +58,6 @@ build_on_keir () { // build on keir intranet
     # compile on another server
     export DOCKER_HOST=ssh://keir@192.168.188.222
     echo "→ DOCKER_HOST=$DOCKER_HOST"
-
 }
 run() {
     echo "> run container" 
@@ -74,19 +73,21 @@ view() {
     # sudo $viewer /var/lib/docker/volumes/2c71e0096b6fa70054a8c10e27ea384975db7e06b942b5c6e705fa499babc2e0/_data/external-content.png
     $viewer $host_volume/external-content.png
 }
+dvmc () { # enter macOS docker VM console
+    docker run -it --rm --privileged --pid=host alpine:edge nsenter -t 1 -m -u -n -i sh
+}
 
-
-# macOS is not a native host of the Docker engine, 
-# which is why the Docker engine 
-# runs through a Linux virtual machine. 
-# The path specified in the Docker volume 
-# is a path on the virtual machine’s filesystem.
-#
-# Remedy macOS:
-# alias dvmc='docker run -it --rm --privileged --pid=host alpine:edge nsenter -t 1 -m -u -n -i sh'
-# $ dvmc
-# This (D)ocker VM Console has the details as usual under /var/lib/docker
-# 
+:<<'COMMENT'
+macOS is not a native host of the Docker engine, 
+which is why the Docker engine 
+runs through a Linux virtual machine. 
+The path specified in the Docker volume 
+is a path on the virtual machine’s filesystem.
+Remedy macOS:
+alias dvmc='docker run -it --rm --privileged --pid=host alpine:edge nsenter -t 1 -m -u -n -i sh'
+$ dvmc
+This (D)ocker VM Console has the details as usual under /var/lib/docker
+COMMENT
 
 case "$1" in
 "prune")
@@ -110,10 +111,10 @@ case "$1" in
 "rawrun")
     raw_run
     ;;
-"dmv")
-    dmv
+"dvmc")
+    dvmc
     ;;
 *)
-    echo -e "\n> Usage: $0 prune | build | run | view | test | rawrun | dmv\n"
+    echo -e "\n> Usage: $0 prune | build | run | view | test | rawrun | dvmc\n"
     ;;
 esac
