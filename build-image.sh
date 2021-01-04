@@ -1,5 +1,7 @@
 #!/bin/bash
 
+host_volume=~/avatar-files
+
 if [[ $2 == "macos" ]]; then
     viewer=open
 else
@@ -43,11 +45,11 @@ prune () {
     echo "> Delete dangling images - alternative"
     docker rmi -f `docker images -q -f dangling=true`
     echo "> Delete external host volume"
-    sudo rm -f ~/avatar-files/*
+    sudo rm -f $host_volume/*
 }
 build () {
     echo "> Create directory of external host volume"
-    mkdir ~/avatar-files 2>/dev/null
+    mkdir $host_volume 2>/dev/null
     echo "> build image" 
     docker build -t avatar .
     docker images
@@ -61,15 +63,16 @@ build_on_keir () { // build on keir intranet
 run() {
     echo "> run container" 
     # docker run --name av_cntl avatar:latest avatar:latest 
-    docker run --rm -v ~/avatar-files:/app/shared avatar:latest
+    docker run --rm -v $host_volume:/app/shared avatar:latest
     tree
-    ls -lt ~/avatar-files
+    echo "> host volume $host_volume holds file ..."
+    ls -lt $host_volume
 }
 view() {
     echo "> View default result using the eye of gnome"
     docker ps -a --no-trunc
     # sudo $viewer /var/lib/docker/volumes/2c71e0096b6fa70054a8c10e27ea384975db7e06b942b5c6e705fa499babc2e0/_data/external-content.png
-    $viewer ~/avatar-files/external-content.png
+    $viewer $host_volume/external-content.png
 }
 
 
