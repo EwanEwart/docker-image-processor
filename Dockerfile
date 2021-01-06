@@ -5,7 +5,8 @@ FROM golang:1.15.6-alpine3.12
 WORKDIR /app
 
 # copy `go.mod` and `go.sum`
-ADD go.mod go.sum ./
+# ADD go.mod go.sum ./ # commented out, because of best practices
+COPY go.mod go.sum ./
 
 # install dependencies: download modules to local cache
 RUN go mod download

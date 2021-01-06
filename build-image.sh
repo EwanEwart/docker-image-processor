@@ -67,7 +67,7 @@ run() {
     echo "> host volume $host_volume holds file ..."
     ls -lt $host_volume
 }
-view() {
+view() { # display transformed picture
     echo "> View default result using the eye of gnome"
     docker ps -a --no-trunc
     # sudo $viewer /var/lib/docker/volumes/2c71e0096b6fa70054a8c10e27ea384975db7e06b942b5c6e705fa499babc2e0/_data/external-content.png
@@ -99,7 +99,7 @@ case "$1" in
 "run")
     run
     ;;
-"view")
+"view") # display transformed picture of host volume
     view
     ;;
 "keir")
